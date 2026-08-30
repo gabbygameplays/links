@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" width="150" height="150" role="img" aria-label="gabby GTA">
+  <defs>
+    <!-- o pôr do sol do logo do VI: rosa em cima, laranja e amarelo em baixo -->
+    <linearGradient id="sunset" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff3d9a"/>
+      <stop offset="0.5" stop-color="#ff7a3d"/>
+      <stop offset="1" stop-color="#ffd166"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff3d9a"/>
+      <stop offset="0.55" stop-color="#ff8a3d"/>
+      <stop offset="1" stop-color="#ffd166"/>
+    </linearGradient>
+    <!-- as listras do sol de Vice City. Grossas de propósito: o avatar é
+         renderizado a 74px e listra fina vira cinza chapado. -->
+    <mask id="stripes">
+      <rect width="150" height="150" fill="#fff"/>
+      <g fill="#000">
+        <rect x="0" y="86" width="150" height="5"/>
+        <rect x="0" y="97" width="150" height="7"/>
+        <rect x="0" y="110" width="150" height="9"/>
+      </g>
+    </mask>
+    <clipPath id="disc">
+      <circle cx="75" cy="75" r="71"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#disc)">
+    <!-- noite roxa -->
+    <rect width="150" height="150" fill="#1c1030"/>
+    <!-- o sol, grande e centrado: é a única forma que precisa sobreviver
+         à redução, então ocupa quase todo o disco -->
+    <circle cx="75" cy="80" r="52" fill="url(#sunset)" mask="url(#stripes)"/>
+  </g>
+
+  <!-- anel do pôr do sol, desenhado aqui pra não depender do CSS -->
+  <circle cx="75" cy="75" r="71" fill="none" stroke="url(#ring)" stroke-width="6"/>
+</svg>

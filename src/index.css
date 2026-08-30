@@ -1,0 +1,319 @@
+:root{
+  color-scheme:dark;
+
+  /* noite: roxo profundo, não preto - o preto mata o neon */
+  --bg:        oklch(0.145 0.055 305);
+  --bg-raised: oklch(0.205 0.062 305);
+  --bg-card:   oklch(0.185 0.050 305);
+  --bg-panel:  oklch(0.975 0.006 320);   /* painel claro só pra capa do produto */
+
+  --fg:       oklch(0.965 0.012 320);
+  --fg-soft:  oklch(0.790 0.030 320);
+  --fg-faint: oklch(0.620 0.040 320);
+
+  --rule:      oklch(0.325 0.055 305);
+  --rule-firm: oklch(0.440 0.080 320);
+
+  /* o pôr do sol do logo do VI */
+  --pink:   oklch(0.672 0.245 355);
+  --orange: oklch(0.760 0.180 45);
+  --yellow: oklch(0.860 0.155 85);
+  --sunset: linear-gradient(96deg,var(--pink) 0%,var(--orange) 55%,var(--yellow) 100%);
+
+  --neon: oklch(0.740 0.250 335);
+  --violet: oklch(0.780 0.140 300);
+
+  --s1:0.25rem; --s2:0.5rem; --s3:0.75rem; --s4:1.15rem;
+  --s5:1.85rem; --s6:2.8rem; --s7:4rem;
+
+  --r:14px;    /* o VI é todo cantos arredondados */
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:"Archivo Variable",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* o sol se pondo atrás do cabeçalho. Um arco largo e simétrico ancorado na
+   borda de cima - as manchas descentralizadas liam como borrão solto, não
+   como horizonte. É ambiente, não ilustração competindo com o conteúdo. */
+body::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:56vh;
+  pointer-events:none;z-index:0;
+  background:
+    radial-gradient(120% 62% at 50% -12%, oklch(0.672 0.245 355 / 0.30) 0%, transparent 62%),
+    radial-gradient(90% 46% at 50% -6%, oklch(0.760 0.180 45 / 0.16) 0%, transparent 58%),
+    radial-gradient(70% 55% at 50% 0%, oklch(0.640 0.190 285 / 0.22) 0%, transparent 72%);
+}
+
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+:focus-visible{outline:2px solid var(--neon);outline-offset:3px;border-radius:4px}
+
+.page{
+  position:relative;z-index:1;
+  max-width:44rem;
+  margin-inline:auto;
+  padding:
+    calc(var(--s6) + env(safe-area-inset-top)) var(--s4)
+    calc(var(--s7) + env(safe-area-inset-bottom));
+}
+
+/* ------------------------------ cabeçalho ------------------------------ */
+
+.head{display:flex;align-items:center;gap:var(--s4);margin-bottom:var(--s4)}
+
+/* o anel do pôr do sol é o padding do wrapper - com `padding` no próprio
+   <img> os cantos da imagem furariam o anel, porque o border-radius corta
+   na border-box e não na content-box */
+.portrait-ring{
+  flex:0 0 auto;
+  display:block;
+  padding:2.5px;
+  border-radius:50%;
+  background:var(--sunset);
+  box-shadow:0 0 26px -4px oklch(0.672 0.245 355 / 0.6);
+}
+
+.portrait{
+  display:block;
+  width:74px;height:74px;
+  object-fit:cover;
+  border-radius:50%;
+}
+
+.name{
+  font-family:Anton,"Archivo Variable",system-ui,sans-serif;
+  font-size:clamp(2.1rem,9vw,2.9rem);
+  font-weight:400;
+  line-height:0.92;
+  letter-spacing:0.005em;
+  text-transform:uppercase;
+  /* o nome recebe o gradiente do logo - é o único texto grande que recebe */
+  background:var(--sunset);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+}
+
+.role{
+  margin-top:6px;
+  font-size:0.72rem;
+  font-weight:600;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--violet);
+}
+
+/* texto de abertura */
+.intro{
+  color:var(--fg-soft);
+  font-size:0.98rem;
+  line-height:1.6;
+  max-width:46ch;
+  margin-top:var(--s4);
+  text-wrap:pretty;
+}
+
+/* aviso de afiliado - perto dos produtos, não escondido no rodapé */
+.aviso{
+  font-size:0.76rem;
+  color:var(--fg-faint);
+  line-height:1.5;
+  max-width:54ch;
+  margin-top:var(--s4);
+  padding-left:var(--s3);
+  border-left:2px solid var(--rule-firm);
+}
+
+/* ------------------------------ produtos ------------------------------ */
+
+.picks{margin-top:var(--s6)}
+
+.picks-head{
+  display:flex;align-items:center;gap:var(--s3);
+  margin-bottom:var(--s4);
+}
+.picks-title{
+  font-family:Anton,"Archivo Variable",system-ui,sans-serif;
+  font-size:1.35rem;font-weight:400;
+  letter-spacing:0.02em;text-transform:uppercase;
+  color:var(--fg);
+}
+/* a régua entre o título e a contagem, no lugar da borda inferior */
+.picks-head::after{
+  content:"";flex:1;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,var(--pink),transparent);
+  order:1;
+}
+.picks-count{
+  order:2;
+  font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--fg-faint);
+}
+
+/* 1 coluna no celular estreito, 2 a partir de 30rem, 3 a partir de 52rem */
+.grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:var(--s4);
+}
+@media (min-width:30rem){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s3)}
+}
+@media (min-width:52rem){
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4)}
+}
+
+.pick{
+  position:relative;
+  display:flex;flex-direction:column;
+  border-radius:var(--r);
+  background:var(--bg-card);
+  box-shadow:inset 0 0 0 1px var(--rule);
+  overflow:hidden;
+  transition:transform .2s cubic-bezier(.2,.7,.3,1),box-shadow .2s ease;
+}
+.pick:hover{
+  transform:translateY(-4px);
+  box-shadow:
+    inset 0 0 0 1px transparent,
+    0 12px 32px -12px oklch(0.672 0.245 355 / 0.55);
+}
+/* a borda vira o gradiente do pôr do sol no hover, sem repintar a caixa */
+.pick::after{
+  content:"";position:absolute;inset:0;border-radius:var(--r);
+  padding:1px;background:var(--sunset);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transition:opacity .2s ease;pointer-events:none;
+}
+.pick:hover::after{opacity:1}
+
+.frame{
+  display:block;position:relative;overflow:hidden;
+  background:var(--bg-panel);
+  aspect-ratio:1/1;
+}
+/* ocupa o máximo da moldura sem cortar: com `cover` as capas de jogo perdiam
+   as laterais e o console ficava decapitado. O respiro é mínimo, só pra
+   imagem não encostar na borda. */
+.frame img{
+  width:100%;height:100%;
+  object-fit:contain;
+  padding:8px;
+  transition:transform .45s cubic-bezier(.2,.7,.3,1);
+}
+.pick:hover .frame img{transform:scale(1.05)}
+
+/* produto ainda sem capa */
+.frame--vazia{
+  background:var(--bg-raised);
+  display:grid;place-items:center;
+}
+.sem-foto{
+  font-size:0.72rem;font-weight:600;color:var(--fg-faint);
+  letter-spacing:0.1em;text-transform:uppercase;
+}
+
+.pick-body{
+  display:flex;flex-direction:column;
+  gap:var(--s1);
+  padding:var(--s3) var(--s3) var(--s4);
+  flex:1;
+}
+
+.pick-name{
+  font-size:0.9rem;
+  font-weight:650;
+  line-height:1.3;
+  letter-spacing:-0.005em;
+}
+
+.pick-rating{
+  display:flex;align-items:center;flex-wrap:wrap;gap:0 5px;
+  color:var(--yellow);
+  font-size:0.8rem;
+  font-weight:700;
+}
+/* no card estreito a contagem não cabe ao lado da nota: vai pra própria linha */
+.pick-rating .reviews{
+  flex-basis:100%;
+  color:var(--fg-faint);font-weight:500;font-size:0.72rem;
+}
+
+/* o preço é o segundo lugar que ganha o gradiente - é o que o olho procura */
+.pick-price{
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:0 7px;
+  font-family:Anton,"Archivo Variable",system-ui,sans-serif;
+  font-size:1.3rem;font-weight:400;letter-spacing:0.01em;
+  margin-top:var(--s1);
+  background:var(--sunset);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+}
+.pick-price .was{
+  font-family:"Archivo Variable",system-ui,sans-serif;
+  color:var(--fg-faint);font-weight:500;font-size:0.78rem;
+  -webkit-text-fill-color:var(--fg-faint);
+}
+
+.pick-why{
+  color:var(--fg-soft);
+  font-size:0.82rem;
+  line-height:1.5;
+  text-wrap:pretty;
+  margin-top:var(--s1);
+}
+
+/* pílula de neon: só o contorno em repouso, preenche no hover */
+.pick-cta{
+  margin-top:auto;
+  align-self:flex-start;
+  padding:7px 14px;
+  border-radius:999px;
+  font-size:0.72rem;font-weight:700;
+  letter-spacing:0.09em;text-transform:uppercase;
+  color:var(--neon);
+  box-shadow:inset 0 0 0 1.5px oklch(0.740 0.250 335 / 0.5);
+  transition:color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.pick:hover .pick-cta{
+  color:oklch(0.16 0.06 305);
+  background:var(--neon);
+  box-shadow:inset 0 0 0 1.5px var(--neon),0 0 22px -4px oklch(0.740 0.250 335 / 0.85);
+}
+
+/* ------------------------------ rodapé ------------------------------ */
+
+/* só a assinatura: a página não leva a lugar nenhum além do ML */
+.foot{
+  margin-top:var(--s6);
+  padding-top:var(--s4);
+  border-top:1px solid var(--rule);
+}
+
+.foot .copy{
+  font-size:0.74rem;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--fg-faint);
+}
+
+@media (min-width:52rem){
+  .page{max-width:66rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
